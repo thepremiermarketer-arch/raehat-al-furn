@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://raehatalfurn.com/sitemap.xml
+Sitemap: https://raehat-al-furn.pages.dev/sitemap.xml
