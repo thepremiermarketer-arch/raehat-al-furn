@@ -2,3 +2,6 @@
 .seo-intro{max-width:850px;margin:0 auto 24px;line-height:1.9;text-align:center;font-size:1.05rem;}
 
 .related-recipes{margin:28px 0;padding:20px;border-radius:16px;border:1px solid #ddd}.related-recipes ul{margin:10px 0 0;padding-right:22px}.related-recipes a{text-decoration:none}
+
+@media(max-width:850px){.nav{flex-wrap:wrap;padding:12px 0}.nav nav{display:flex;order:3;width:100%;justify-content:center;gap:12px}.nav nav a{font-size:12px}}
+.hero-plate .no-image{position:absolute;width:68%;height:68%;top:16%;left:16%;border-radius:50%;font-size:72px;border:8px solid rgba(255,250,243,.9);box-shadow:0 12px 28px rgba(70,45,28,.18);display:grid;place-items:center;background:linear-gradient(135deg,#f1ddc5,#d8b18b)}
