@@ -3,54 +3,56 @@ const SITE = "https://raehat-al-furn.pages.dev";
 const RECIPES = {
   "recipe-apple-puff.html": {
     name: "باف باستري بالتفاح والقرفة",
-    image: "/images/apple-puff.svg",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Apple_pie_with_puff_pastry.jpg",
   },
   "recipe-vanilla-cake.html": {
     name: "كيكة الفانيليا المنزلية",
-    image: "/images/vanilla-cake.svg",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Vanilla_Cake.jpg",
   },
   "recipe-cheese-pies.html": {
     name: "فطائر الجبن السريعة",
-    image: "/images/cheese-pies.svg",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Mugabbana_Cheese_Pies.jpg",
   },
   "recipe-4.html": {
     name: "خبز منزلي طري",
-    image: "/images/home-bread.svg",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Homemade_bread.jpg",
   },
   "recipe-roasted-potatoes.html": {
     name: "بطاطس بالفرن",
-    image: "/images/roasted-potatoes.svg",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Roasted_potatoes.jpg",
   },
   "recipe-6.html": {
     name: "دجاج بالفرن بالخضار",
-    image: "/images/roast-chicken.svg",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Baked_chicken_and_veggies.jpg",
   },
   "recipe-7.html": {
     name: "فطيرة التفاح السهلة",
-    image: "/images/apple-pie.svg",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Apple_pie.jpg",
   },
   "recipe-8.html": {
     name: "مكرونة بالصلصة الكريمية",
-    image: "/images/creamy-pasta.svg",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Pasta_with_cream_sauce_bacon_and_mushroom.jpg",
   },
   "recipe-9.html": {
     name: "كرواسون منزلي مبسط",
-    image: "/images/croissant.svg",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Croissant.jpg",
   },
   "recipe-10.html": {
     name: "كوكيز الشوكولاتة",
-    image: "/images/chocolate-cookies.svg",
+    image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Chocolate_chip_cookie.jpg",
   },
 };
 
 const HOME_IMAGES = [
-  RECIPES["recipe-apple-puff.html"],
   RECIPES["recipe-apple-puff.html"],
   RECIPES["recipe-vanilla-cake.html"],
   RECIPES["recipe-cheese-pies.html"],
   RECIPES["recipe-4.html"],
   RECIPES["recipe-roasted-potatoes.html"],
   RECIPES["recipe-6.html"],
+  RECIPES["recipe-7.html"],
+  RECIPES["recipe-8.html"],
+  RECIPES["recipe-9.html"],
 ];
 
 const LIST_IMAGES = [
@@ -72,7 +74,7 @@ function filename(pathname) {
 }
 
 function absoluteImage(path) {
-  return `${SITE}${path}`;
+  return /^https?:\/\//i.test(path) ? path : `${SITE}${path}`;
 }
 
 class JsonLdRecipeHandler {
@@ -149,7 +151,7 @@ export async function onRequest(context) {
         element(element) {
           const imageUrl = absoluteImage(recipe.image);
           element.replace(
-            `<img src="${imageUrl}" alt="${recipe.name}" class="recipe-cover" loading="eager" width="800" height="600" style="display:block;width:100%;max-width:900px;aspect-ratio:4/3;object-fit:cover;border-radius:16px;margin:20px 0 28px">`,
+            `<img src="${imageUrl}" alt="${recipe.name}" class="recipe-cover" loading="eager" width="1200" height="800" style="display:block;width:100%;max-width:900px;aspect-ratio:3/2;object-fit:cover;border-radius:20px;margin:20px 0 28px;box-shadow:0 12px 30px rgba(70,45,28,.12)">`,
             { html: true },
           );
         },
@@ -158,7 +160,7 @@ export async function onRequest(context) {
         element(element) {
           const imageUrl = absoluteImage(recipe.image);
           element.append(
-            `<meta property="og:image" content="${imageUrl}"><meta property="og:image:alt" content="${recipe.name}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="${imageUrl}">`,
+            `<link rel="preload" as="image" href="${imageUrl}"><meta property="og:image" content="${imageUrl}"><meta property="og:image:alt" content="${recipe.name}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="${imageUrl}">`,
             { html: true },
           );
         },
@@ -168,12 +170,12 @@ export async function onRequest(context) {
 
   if (isHome) {
     let index = 0;
-    rewriter.on(".no-image", {
+    rewriter.on(".pic", {
       element(element) {
         const item = HOME_IMAGES[index++] || HOME_IMAGES[0];
         const imageUrl = absoluteImage(item.image);
-        element.replace(
-          `<img src="${imageUrl}" alt="${item.name}" loading="lazy" width="800" height="600" style="width:100%;height:100%;object-fit:cover;display:block">`,
+        element.setInnerContent(
+          `<img src="${imageUrl}" alt="${item.name}" loading="lazy" width="1200" height="800" style="width:100%;height:100%;object-fit:cover;display:block">`,
           { html: true },
         );
       },
@@ -193,7 +195,7 @@ export async function onRequest(context) {
         const item = LIST_IMAGES[index++] || LIST_IMAGES[0];
         const imageUrl = absoluteImage(item.image);
         element.setInnerContent(
-          `<img src="${imageUrl}" alt="${item.name}" loading="lazy" width="800" height="600" style="width:100%;height:100%;object-fit:cover;display:block">`,
+          `<img src="${imageUrl}" alt="${item.name}" loading="lazy" width="1200" height="800" style="width:100%;height:100%;object-fit:cover;display:block">`,
           { html: true },
         );
       },
